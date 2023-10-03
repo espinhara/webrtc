@@ -39,7 +39,7 @@ export default function App({ }) {
   );
   const otherUserId = useRef(null);
 
-  const socket = SocketIOClient("your server", {//connect your server
+  const socket = SocketIOClient("https://followmme.com", {
     transports: ["websocket"],
     query: {
       callerId,
@@ -114,16 +114,12 @@ export default function App({ }) {
             console.log("Error", err);
           });
 
-        console.log("CANDIDATE", candidate);
-        console.log("SDPMID", sdpMid);
-        console.log("SDOMLINEINDEX", sdpMLineIndex);
-        console.log("///////////////////////////////");
+        // console.log("CANDIDATE", candidate);
+        // console.log("SDPMID", sdpMid);
+        // console.log("SDOMLINEINDEX", sdpMLineIndex);
+        // console.log("///////////////////////////////");
       }
     });
-
-    socket.on("callDeclined", data => {
-      console.log(data)
-    })
 
     let isFront = true;
 
@@ -193,7 +189,7 @@ export default function App({ }) {
         // console.log("LABEL OK", label);
         // console.log("ID OK", id);
         // console.log("CADIDATE OK", candidate);
-        console.log("///////////////////////////////////");
+        // console.log("///////////////////////////////////");
       } else {
         console.log("End of candidates.");
       }
@@ -218,14 +214,6 @@ export default function App({ }) {
 
   function sendICEcandidate(data) {
     socket.emit("ICEcandidate", data);
-  }
-
-  function callLeave(data) {
-    socket.emit("callLeave", data)
-  }
-
-  function callDesired(data) {
-    socket.emit("callDesired", data)
   }
 
   async function processCall() {
@@ -455,26 +443,10 @@ export default function App({ }) {
         </View>
         <View
           style={{
-            justifyContent: "space-between",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              processAccept();
-              setType("WEBRTC_ROOM");
-            }}
-            style={{
-              backgroundColor: "#FF5D5D",
-              borderRadius: 30,
-              height: 60,
-              aspectRatio: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <CallEnd width={50} height={12} />
-          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               processAccept();
@@ -517,7 +489,6 @@ export default function App({ }) {
   }
 
   function leave() {
-    callLeave({ callerId, dateTime: Date.now() })
     peerConnection.current.close();
     setlocalStream(null);
     setType("JOIN");

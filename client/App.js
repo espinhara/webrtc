@@ -39,7 +39,7 @@ export default function App({ }) {
   );
   const otherUserId = useRef(null);
 
-  const socket = SocketIOClient("https://followmme.com", {//connect your server
+  const socket = SocketIOClient("your server", {//connect your server
     transports: ["websocket"],
     query: {
       callerId,
